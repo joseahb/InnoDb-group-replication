@@ -10,12 +10,16 @@ user@hostname$ rm -rf /etc/apparmor.d/abstractions/mysql /etc/apparmor.d/cache/u
 user@hostname$ apt install mysql-server
 
 # create replication user
-mysql > SET SQL_LOG_BIN=0;
-mysql > CREATE USER 'repluser'@'%' IDENTIFIED BY 'password' REQUIRE SSL;
-mysql > GRANT REPLICATION SLAVE ON *.* TO 'repluser'@'%';
-mysql > FLUSH PRIVILEGES;
-mysql > SET SQL_LOG_BIN=1;
 
+mysql > SET SQL_LOG_BIN=0;
+
+mysql > CREATE USER 'repluser'@'%' IDENTIFIED BY 'password' REQUIRE SSL;
+
+mysql > GRANT REPLICATION SLAVE ON *.* TO 'repluser'@'%';
+
+mysql > FLUSH PRIVILEGES;
+
+mysql > SET SQL_LOG_BIN=1;
 
 # Slave replication user configuration
 mysql > CHANGE MASTER TO MASTER_USER='repluser', MASTER_PASSWORD='password' FOR CHANNEL 'group_replication_recovery';
