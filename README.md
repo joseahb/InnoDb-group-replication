@@ -11,14 +11,14 @@ user@hostname$ apt install mysql-server
 
 # create replication user
 mysql > SET SQL_LOG_BIN=0;
-mysql > CREATE USER 'repluser'@'%' IDENTIFIED BY 'Qwerty123#' REQUIRE SSL;
+mysql > CREATE USER 'repluser'@'%' IDENTIFIED BY 'password' REQUIRE SSL;
 mysql > GRANT REPLICATION SLAVE ON *.* TO 'repluser'@'%';
 mysql > FLUSH PRIVILEGES;
 mysql > SET SQL_LOG_BIN=1;
 
 
 # Slave replication user configuration
-mysql > CHANGE MASTER TO MASTER_USER='repluser', MASTER_PASSWORD='Qwerty123#' FOR CHANNEL 'group_replication_recovery';
+mysql > CHANGE MASTER TO MASTER_USER='repluser', MASTER_PASSWORD='password' FOR CHANNEL 'group_replication_recovery';
 
 
 # /etc/mysql/my.cnf
@@ -57,9 +57,9 @@ loose-group_replication_recovery_use_ssl = 1
 
 loose-group_replication_group_name = "56bbe764-c69e-4d34-8e61-e7a124cf3e6c"
 
-loose-group_replication_ip_whitelist = "192.168.0.10,192.168.0.13,192.168.0.8,192.168.0.12"
+loose-group_replication_ip_whitelist = "x.x.x.x, x.x.x.x,  x.x.x.x"
 
-loose-group_replication_group_seeds = "192.168.0.10:6606,192.168.0.13:6607,192.168.0.8:6608,192.168.0.12:6609"
+loose-group_replication_group_seeds = "x.x.x.x:port, x.x.x.x:port, x.x.x.x:port"
 
 *//Single or Multi-primary mode? Uncomment these two lines*
 
@@ -72,20 +72,20 @@ loose-group_replication_enforce_update_everywhere_checks = ON
 *//Host specific replication configuration
 
 //server_id =*
-bind-address = "192.168.0.10"
+bind-address = "current_node_ip"
 
-report_host = "192.168.0.10"
+report_host = "current_node_ip"
 
-loose-group_replication_local_address = "192.168.0.10:6606
+loose-group_replication_local_address = "current_node_ip:6606"
 
 
 # Replicas
 
 mysql > CHANGE REPLICATION SOURCE TO 
-             SOURCE_HOST = "192.168.0.13",
+             SOURCE_HOST = "primary_ip",
              SOURCE_PORT = 3306,
              SOURCE_USER = "repluser",
-             SOURCE_PASSWORD = "Qwerty123#",
+             SOURCE_PASSWORD = "password",
              SOURCE_AUTO_POSITION = 1;
 
 # Empty queries to catch up purged executions
