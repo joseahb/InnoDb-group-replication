@@ -1,24 +1,24 @@
 # InnoDb-group-replication
 
 # Purge Existing
-apt purge mysql*
+user@hostname$ apt purge mysql*
 
-rm -rf /etc/apparmor.d/abstractions/mysql /etc/apparmor.d/cache/usr.sbin.mysqld /etc/mysql /var/lib/mysql /var/log/mysql* /var/log/upstart/mysql.log* /var/run/mysqld updatedb
+user@hostname$ rm -rf /etc/apparmor.d/abstractions/mysql /etc/apparmor.d/cache/usr.sbin.mysqld /etc/mysql /var/lib/mysql /var/log/mysql* /var/log/upstart/mysql.log* /var/run/mysqld updatedb
 
 
 # Installation server
-apt install mysql-server
+user@hostname$ apt install mysql-server
 
 # create replication user
-SET SQL_LOG_BIN=0;
-CREATE USER 'repluser'@'%' IDENTIFIED BY 'Qwerty123#' REQUIRE SSL;
-GRANT REPLICATION SLAVE ON *.* TO 'repluser'@'%';
-FLUSH PRIVILEGES;
-SET SQL_LOG_BIN=1;
+mysql > SET SQL_LOG_BIN=0;
+mysql > CREATE USER 'repluser'@'%' IDENTIFIED BY 'Qwerty123#' REQUIRE SSL;
+mysql > GRANT REPLICATION SLAVE ON *.* TO 'repluser'@'%';
+mysql > FLUSH PRIVILEGES;
+mysql > SET SQL_LOG_BIN=1;
 
 
 # Slave replication user configuration
-CHANGE MASTER TO MASTER_USER='repluser', MASTER_PASSWORD='Qwerty123#' FOR CHANNEL 'group_replication_recovery';
+mysql > CHANGE MASTER TO MASTER_USER='repluser', MASTER_PASSWORD='Qwerty123#' FOR CHANNEL 'group_replication_recovery';
 
 
 /etc/mysql/my.cnf
@@ -115,6 +115,6 @@ mysql > SET GLOBAL group_replication_bootstrap_group=OFF;
 # Each of the remaining
 mysql > START GROUP_REPLICATION;
 
-#Load balancing
+# Load balancing
 
 user@hostname$ mysqlrouter --bootstrap root@localhost:3310 --directory /tmp/myrouter --conf-use-sockets --account routerfriend --account-create always
