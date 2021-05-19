@@ -2,6 +2,7 @@
 
 # Purge Existing
 apt purge mysql*
+
 rm -rf /etc/apparmor.d/abstractions/mysql /etc/apparmor.d/cache/usr.sbin.mysqld /etc/mysql /var/lib/mysql /var/log/mysql* /var/log/upstart/mysql.log* /var/run/mysqld updatedb
 
 
