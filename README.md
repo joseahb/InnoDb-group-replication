@@ -21,7 +21,7 @@ mysql > SET SQL_LOG_BIN=1;
 mysql > CHANGE MASTER TO MASTER_USER='repluser', MASTER_PASSWORD='Qwerty123#' FOR CHANNEL 'group_replication_recovery';
 
 
-/etc/mysql/my.cnf
+# /etc/mysql/my.cnf
 
 [mysqld]
 
