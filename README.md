@@ -22,9 +22,6 @@ mysql > FLUSH PRIVILEGES;
 
 mysql > SET SQL_LOG_BIN=1;
 
-# Group replication user configuration
-*All the nodes*
-
 mysql > CHANGE MASTER TO MASTER_USER='repluser', MASTER_PASSWORD='password' FOR CHANNEL 'group_replication_recovery';
 
 # Generate group replication name
@@ -80,7 +77,7 @@ loose-group_replication_single_primary_mode = OFF
 
 loose-group_replication_enforce_update_everywhere_checks = ON
 
-*//Host specific replication configuration
+*//Host specific replication configuration*
 
 server_id = any_integer
 
@@ -93,6 +90,7 @@ loose-group_replication_local_address = "current_node_ip:6606"
 # Configuring slave
 
 *check master binlog and excecuted*
+
 mysql > show master status;
 
 *Find binlog and master log position*
